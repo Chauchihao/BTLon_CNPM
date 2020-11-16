@@ -1,4 +1,6 @@
 from flask import render_template, request, redirect
+from sqlalchemy.testing.pickleable import User
+
 from QuanLy import app, login
 from flask_login import login_user, LoginManager
 from QuanLy.models import *
@@ -14,8 +16,8 @@ def login_admin():
     if request.methods == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        password = str(hashlib.md5(password.strip().encode("utf-8").hexdigest()))
-        user = User.query.filter(User.username == username.strip(), User.password == password.strip()).first()
+        # password = str(hashlib.md5(password.strip().encode("utf-8").hexdigest()))
+        user = User.query.filter(User.username == username.strip(), User.password == password).first()
         if user:
             login_user(user=user)
     return redirect("/admin")
