@@ -18,7 +18,7 @@ class DanhSachKhamBenh(Base):
     hoten = Column(String(100), nullable=False)
     ngaykham = Column(Date, default=datetime.now())
     gioitinh = Column(String(100), nullable=True)
-    namsinh = Column(datetime.year, nullable=True)
+    namsinh = Column(Date, nullable=True)
     diachi = Column(String(100), nullable=True)
 
 class PhieuKhamBenh(Base):
@@ -32,33 +32,33 @@ class PhieuKhamBenh(Base):
     soluong = Column(Integer, nullable=True)
     cachdung = Column(String(100), nullable=True)
 
-class DanhSachBenhNhan(Base):
-    __tablename__ = "DanhSachBenhNhan"
-    hoten = Column(String(100), ForeignKey(DanhSachKhamBenh.hoten), nullable=False)
-    ngaykham = Column(Date, ForeignKey(DanhSachKhamBenh.ngaykham))
-    loaibenh = Column(String(100), ForeignKey(PhieuKhamBenh.dudoanloaibenh), nullable=True)
-    trieuchung = Column(String(100), ForeignKey(PhieuKhamBenh.trieuchung), nullable=True)
+# class DanhSachBenhNhan(Base):
+#     __tablename__ = "DanhSachBenhNhan"
+#     hoten = Column(String(100), ForeignKey(DanhSachKhamBenh.hoten), nullable=False)
+#     ngaykham = Column(Date, ForeignKey(DanhSachKhamBenh.ngaykham))
+#     loaibenh = Column(String(100), ForeignKey(PhieuKhamBenh.dudoanloaibenh), nullable=True)
+#     trieuchung = Column(String(100), ForeignKey(PhieuKhamBenh.trieuchung), nullable=True)
+#
+# class HoaDonThanhToan(Base):
+#     __tablename__ = "HoaDonThanhToan"
+#     hoten = Column(String(100), ForeignKey(DanhSachKhamBenh.hoten), nullable=False)
+#     ngaykham = Column(Date, ForeignKey(DanhSachKhamBenh.ngaykham))
+#     tienkham = Column(Float, nullable=True)
+#     tienthuoc = Column(Float, nullable=True)
 
-class HoaDonThanhToan(Base):
-    __tablename__ = "HoaDonThanhToan"
-    hoten = Column(String(100), ForeignKey(DanhSachKhamBenh.hoten), nullable=False)
-    ngaykham = Column(Date, ForeignKey(DanhSachKhamBenh.ngaykham))
-    tienkham = Column(Float, nullable=True)
-    tienthuoc = Column(Float, nullable=True)
+# class BaoCaoDanhThuTheoNgay(Base):
+#     __tablename__ = "BaoCaoDanhThuTheoNgay"
+#     thang = Column(Integer, nullable=False)
+#     ngay = Column(Date, ForeignKey(PhieuKhamBenh.ngaykham))
+#
+# class BaoCaoSuDungThuoc(Base):
+#     __tablename__ = "BaoCaoSuDungThuoc"
+#     thang = Column(Integer, nullable=False)
 
-class BaoCaoDanhThuTheoNgay(Base):
-    __tablename__ = "BaoCaoDanhThuTheoNgay"
-    thang = Column(Integer, nullable=False)
-    ngay = Column(datetime.day, ForeignKey(PhieuKhamBenh.ngaykham))
-
-class BaoCaoSuDungThuoc(Base):
-    __tablename__ = "BaoCaoSuDungThuoc"
-    thang = Column(Integer, nullable=False)
-
-class UserRole(UserEnum):
-    Admin = 1
-    BacSi = 2
-    NhanVien = 3
+#class UserRole(UserEnum):
+    # Admin = 1
+    # BacSi = 2
+    # NhanVien = 3
 
 
 class User(Base, UserMixin):
@@ -69,7 +69,10 @@ class User(Base, UserMixin):
     avatar = Column(String(100))
     active = Column(Boolean, default=True)
     joined_date = Column(Date, default=datetime.now())
-    user_role = Column(Enum(UserRole), default=UserRole.USER)
+    #ser_role = Column(Enum(UserRole), default=UserRole.USER)
+
+    def __str__(self):
+        return self.name
 
 
 if __name__ == '__main__':
