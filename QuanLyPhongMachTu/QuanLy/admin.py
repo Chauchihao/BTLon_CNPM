@@ -1,11 +1,18 @@
-from werkzeug.utils import redirect
-
-from QuanLy import admin, db, app
+from flask import redirect
+from QuanLy import *
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import Admin, BaseView, expose
 from flask_login import logout_user, current_user
 
-admin = Admin(app, name="QUẢN LÝ PHÒNG MẠCH TƯ", template_mode="bootstrap4")
+class MySelftModelView(ModelView):
+    column_display_pk = False
+    can_edit = True
+    can_export = True
+    can_create = True
+    can_delete = True
+
+    def is_accessible(self):
+        return current_user.is_authenticated
 
 class LogoutView(BaseView):
     @expose('/')
