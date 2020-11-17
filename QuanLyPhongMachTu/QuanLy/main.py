@@ -2,6 +2,7 @@ from flask import render_template, request, redirect
 from QuanLy import app, login
 from flask_login import login_user, LoginManager
 from QuanLy.models import *
+from QuanLy.admin import *
 import hashlib
 
 

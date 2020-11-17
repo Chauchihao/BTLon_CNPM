@@ -1,8 +1,12 @@
-from flask import redirect
-from QuanLy import *
+from werkzeug.utils import redirect
+
+from QuanLy import admin, db, app
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import Admin, BaseView, expose
 from flask_login import logout_user, current_user
+
+from QuanLy.models import BenhNhan, PhieuKhamBenh
+
 
 class MySelftModelView(ModelView):
     column_display_pk = False
@@ -23,4 +27,7 @@ class LogoutView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated
 
+
+admin.add_view(MySelftModelView(BenhNhan, db.session, name="Bệnh Nhân"))
+admin.add_view(MySelftModelView(PhieuKhamBenh, db.session, name="Phiếu khám bệnh"))
 admin.add_view(LogoutView(name="Đăng xuất"))

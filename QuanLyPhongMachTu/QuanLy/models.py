@@ -2,7 +2,6 @@ from sqlalchemy import Column, Integer, String, Float, Boolean, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from QuanLy import db
 from datetime import datetime
-from enum import Enum as UserEnum
 from flask_login import UserMixin
 
 class BenhNhan(db.Model):
@@ -12,13 +11,13 @@ class BenhNhan(db.Model):
     ngaykham = Column(Date, default=datetime.now())
     loaibenh = Column(String(100), nullable=True)
     trieuchung = Column(String(100), nullable=True)
-    cophieukhambenh = relationship('PhieuKhamBenh', backref='PhieuKhamBenh', lazy=True)
+    cophieukhambenh = relationship('PhieuKhamBenh', backref='BenhNhan', lazy=True)
 
 class PhieuKhamBenh(db.Model):
     __tablename__ = "DanhSachKhamBenh"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    hoten = Column(String(100), ForeignKey(BenhNhan.hoten), nullable=False)
-    ngaykham = Column(Date, ForeignKey(BenhNhan.ngaykham))
+    hoten = Column(String(100), nullable=False)
+    ngaykham = Column(Date, default=datetime.now())
     gioitinh = Column(String(100), nullable=True)
     namsinh = Column(Date, nullable=True)
     diachi = Column(String(100), nullable=True)
