@@ -12,6 +12,9 @@ class BenhNhan(db.Model):
     loaibenh = Column(String(100), nullable=True)
     trieuchung = Column(String(100), nullable=True)
     cophieukhambenh = relationship('PhieuKhamBenh', backref='BenhNhan', lazy=True)
+    def __str__(self):
+         return self.hoten
+
 
 class PhieuKhamBenh(db.Model):
     __tablename__ = "DanhSachKhamBenh"
@@ -24,7 +27,7 @@ class PhieuKhamBenh(db.Model):
     idbenhnhan = Column(Integer, ForeignKey(BenhNhan.id), nullable=False)
 
     def __str__(self):
-         return self.name
+         return self.hoten
 
 
 class User(db.Model, UserMixin):
@@ -34,6 +37,9 @@ class User(db.Model, UserMixin):
     active = Column(Boolean, default=True)
     username = Column(String(50), nullable=False)
     password = Column(String(50), nullable=False)
+    def __str__(self):
+         return self.name
+
 
 if __name__ == '__main__':
     db.create_all()

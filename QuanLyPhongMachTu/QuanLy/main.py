@@ -15,7 +15,7 @@ def login_admin():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        password = str(hashlib.md5(password.strip().encode("utf-8")).hexdigest())
+        # password = str(hashlib.md5(password.strip().encode("utf-8")).hexdigest())
         user = User.query.filter(User.username == username.strip(),
                                  User.password == password.strip()).first()
         if user:
