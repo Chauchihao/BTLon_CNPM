@@ -5,7 +5,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin import Admin, BaseView, expose
 from flask_login import logout_user, current_user
 
-from QuanLy.models import BenhNhan, PhieuKhamBenh
+from QuanLy.models import User
 
 
 class MySelftModelView(ModelView):
@@ -27,7 +27,7 @@ class LogoutView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated
 
-
-admin.add_view(MySelftModelView(BenhNhan, db.session, name="Bệnh Nhân"))
-admin.add_view(MySelftModelView(PhieuKhamBenh, db.session, name="Phiếu khám bệnh"))
+admin.add_view(MySelftModelView(User, db.session, name="User"))
+# admin.add_view(MySelftModelView(LoaiBenh, db.session, name="Loại bệnh"))
+# admin.add_view(MySelftModelView(TrieuChung, db.session, name="Triệu chứng"))
 admin.add_view(LogoutView(name="Đăng xuất"))
