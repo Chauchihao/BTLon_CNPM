@@ -30,20 +30,15 @@ def login_usr():
 def register():
     err_msg = ''
     if request.method == 'POST':
+        user_role = request.form.get('user_role')
         name = request.form.get('name')
         email = request.form.get('email')
         username = request.form.get('username')
         password = request.form.get('password', '').strip()
         confirm_password = request.form.get('confirm_password', '').strip()
-
         if password == confirm_password:
-            avatar = request.files["avatar"]
-            avatar_path = 'images/upload/%s' % avatar.filename
-            avatar.save(os.path.join(app.config['ROOT_PROJECT_PATH'],
-                                     'static/', avatar_path))
-
-            if utils.add_user(name=name, email=email, username=username,
-                              password=password, avatar=avatar_path):
+            if utils.add_user(user_role=user_role,name=name, email=email, username=username,
+                              password=password):
                 return redirect('/admin')
         else:
             err_msg = "Mật khẩu KHÔNG khớp!"

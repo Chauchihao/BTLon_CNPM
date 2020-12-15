@@ -136,19 +136,6 @@ class User(db.Model, UserMixin):
     def __str__(self):
         return self.name
 
-# class Receipt(db.Model):
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     created_date = Column(DateTime, default=datetime.today())
-#     customer_id = Column(Integer, ForeignKey(User.id))
-#
-#     details = relationship('ReceiptDetail',
-#                            backref='receipt', lazy=True)
-#
-# class ReceiptDetail(db.Model):
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     quantity = Column(Integer, default=0)
-#     price = Column(Float, default=0)
-
 def insertUser():
     u1 = User(name="Admin",
               username="Admin",
