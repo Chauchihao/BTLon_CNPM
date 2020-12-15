@@ -1,99 +1,254 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, Date, ForeignKey, Enum
+from sqlalchemy import Column, Integer, String, Float, Boolean, Date, ForeignKey, Enum, DateTime
 from sqlalchemy.orm import relationship, backref
 from QuanLy import db
 from datetime import datetime
 from flask_login import UserMixin
-from enum import Enum as UserEnum
+from enum import Enum as AEnum
 
-class BaseView(db.Model):
-    __abstract__ = True
 
+class BenhNhan(db.Model):
+    __tablename__ = "DanhSachBenhNhan"
     id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    date = Column(Date, default=datetime.now())
+    date_of_birth = Column(Date, nullable=True)
+    loaibenh = relationship('LoaiBenh', secondary='benhnhan_loaibenh', lazy='subquery',
+                               backref=backref('BenhNhan', lazy=True))
+    trieuchung = relationship('TrieuChung', secondary='benhnhan_trieuchung', lazy='subquery',
+                               backref=backref('BenhNhan', lazy=True))
+    # co_phieu_kham_benh = relationship('PhieuKhamBenh', backref='BenhNhan', lazy=True)
 
     def __str__(self):
-        return self.id
-
-# class BenhNhan(BaseModal):
-#     __tablename__ = "DanhSachBenhNhan"
-#     ho_ten = Column(String(100), nullable=False)
-#     ngay_kham = Column(Date, default=datetime.now())
-#     loai_benh = Column(String(100), nullable=True)
-#     trieu_chung = Column(String(100), nullable=True)
-#     co_phieu_kham_benh = relationship('PhieuKhamBenh', backref='BenhNhan', lazy=True)
+        return self.name
 #
 #
-# class PhieuKhamBenh(BaseModal):
+# class PhieuKhamBenh(BaseView):
 #     __tablename__ = "DanhSachKhamBenh"
 #     gioi_tinh = Column(String(100), nullable=True)
 #     nam_sinh = Column(Date, nullable=True)
 #     dia_chi = Column(String(100), nullable=True)
 #     id_benh_nhan = Column(Integer, ForeignKey(BenhNhan.id), nullable=False)
 
-# loaibenh_trieuchung = db.Table('loaibenh_trieuchung',
-#                                 Column('id_trieu_chung', Integer, ForeignKey('ql_trieu_chung.id'), primary_key=True),
-#                                 Column('id_loai_benh', Integer, ForeignKey('ql_loai_benh.id'), primary_key=True))
-#
-
-class QL_LoaiBenh(BaseView):
+class LoaiBenh(db.Model):
+    __tablename__ = 'LoaiBenh'
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
-#     trieu_chung = relationship('Ql_TrieuChung', secondary='loaibenh_trieuchung', lazy='subquery',
-#                                backref=backref('QL_LoaiBenh', lazy=True))
-#
-class QL_TrieuChung(BaseView):
+    trieuchung = relationship('TrieuChung', secondary='loaibenh_trieuchung', lazy='subquery',
+                               backref=backref('LoaiBenh', lazy=True))
+
+    def __str__(self):
+        return self.name
+
+benhnhan_loaibenh = db.Table('benhnhan_loaibenh',
+                             Column('id_benhnhan', Integer, ForeignKey(BenhNhan.id), primary_key=True),
+                             Column('id_loaibenh', Integer, ForeignKey(LoaiBenh.id), primary_key=True))
+
+class TrieuChung(db.Model):
+    __tablename__ = 'TrieuChung'
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
 
-class QL_LoaiThuoc(BaseView):
+    def __str__(self):
+        return self.name
+
+loaibenh_trieuchung = db.Table('loaibenh_trieuchung',
+                                Column('id_trieuchung', Integer, ForeignKey(TrieuChung.id), primary_key=True),
+                                Column('id_loaibenh', Integer, ForeignKey(LoaiBenh.id), primary_key=True))
+
+benhnhan_trieuchung = db.Table('benhnhan_trieuchung',
+                                Column('id_benhnhan', Integer, ForeignKey(BenhNhan.id), primary_key=True),
+                                Column('id_trieuchung', Integer, ForeignKey(TrieuChung.id), primary_key=True))
+
+class LoaiThuoc(db.Model):
+    __tablename__ = 'LoaiThuoc'
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
+    cachdung = relationship('CachDungThuoc', secondary='loaithuoc_cachdung', lazy='subquery',
+                          backref=backref('LoaiThuoc', lazy=True))
 
+    def __str__(self):
+        return self.name
 
+class DonViThuoc(db.Model):
+    __tablename__ = 'DonViThuoc'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    donvi = Column(String(100), nullable=False)
 
-don_gia_don_vi_thuoc = db.Table('don_gia_don_vi_thuoc',
-                                Column('id_don_gia', Integer, ForeignKey('don_vi_thuoc.id'), primary_key=True),
-                                Column('id_don_vi', Integer, ForeignKey('don_gia_thuoc.id'), primary_key=True))
+    def __str__(self):
+        return self.donvi
 
-# class DonViThuoc(Enum):
-#     VIEN = 1
-#     CHAI = 2
-
-class DonViThuoc(BaseView):
-    don_vi = Column(String(100), nullable=False)
-
-class DonGiaThuoc(BaseView):
-    don_gia = Column(Float, nullable=False)
-    don_vi = relationship('DonViThuoc', secondary='don_gia_don_vi_thuoc', lazy='subquery',
+class DonGiaThuoc(db.Model):
+    __tablename__ = 'DonGiaThuoc'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    dongia = Column(String(100), nullable=False)
+    donvi = relationship('DonViThuoc', secondary='dongia_donvithuoc', lazy='subquery',
                                backref=backref('DonGiaThuoc', lazy=True))
 
-class CachDungThuoc(Enum):
-    UONG = 1
-    THOA = 2
-    NGAM = 3
-    HIT = 4
+    def __str__(self):
+        return self.dongia
 
-class UserRole(UserEnum):
+dongia_donvithuoc = db.Table('dongia_donvithuoc',
+                                Column('id_dongia', Integer, ForeignKey(DonViThuoc.id), primary_key=True),
+                                Column('id_donvi', Integer, ForeignKey(DonGiaThuoc.id), primary_key=True))
+
+loaithuoc_donvithuoc = db.Table('loaithuoc_donvithuoc',
+                                Column('id_loaithuoc', Integer, ForeignKey(LoaiThuoc.id), primary_key=True),
+                                Column('id_donvi', Integer, ForeignKey(DonViThuoc.id), primary_key=True))
+
+class CachDungThuoc(db.Model):
+    __tablename__ = 'CachDungThuoc'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    loaithuoc = relationship('LoaiThuoc', secondary='loaithuoc_cachdung', lazy='subquery',
+                          backref=backref('CachDungThuoc', lazy=True))
+
+    def __str__(self):
+        return self.name
+
+loaithuoc_cachdung = db.Table('loaithuoc_cachdung',
+                                Column('id_loaithuoc', Integer, ForeignKey(LoaiThuoc.id), primary_key=True),
+                                Column('id_cachdung', Integer, ForeignKey(CachDungThuoc.id), primary_key=True))
+
+class UserRole(AEnum):
     ADMIN = 1
     DOCTOR = 2
     MEDICAL_WORKER = 3
-    PATIENT = 4
 
-class User(BaseView, UserMixin):
+class Gender(AEnum):
+    MALE = 1
+    FEMALE = 2
+
+class User(db.Model, UserMixin):
     __tablename__ = 'User'
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     username = Column(String(100), nullable=False)
     password = Column(String(100), nullable=False)
     avatar = Column(String(100))
-    active = Column(Boolean, default=False)
+    email = Column(String(100))
+    active = Column(Boolean, default=True)
     address = Column(String(100), nullable=True)
-    sex = Column(Boolean, default=True)
+    gender = Column(Enum(Gender), default=Gender.FEMALE)
     year_of_birth = Column(Integer, nullable=True)
     join_date = Column(Date, default=datetime.now())
     user_role = Column(Enum(UserRole))
 
-class Doctor(User):
-    __tablename__ = 'Doctor'
-    khoa = Column(String(100), nullable=False)
+    def __str__(self):
+        return self.name
+
+# class Receipt(db.Model):
+#     id = Column(Integer, primary_key=True, autoincrement=True)
+#     created_date = Column(DateTime, default=datetime.today())
+#     customer_id = Column(Integer, ForeignKey(User.id))
+#
+#     details = relationship('ReceiptDetail',
+#                            backref='receipt', lazy=True)
+#
+# class ReceiptDetail(db.Model):
+#     id = Column(Integer, primary_key=True, autoincrement=True)
+#     quantity = Column(Integer, default=0)
+#     price = Column(Float, default=0)
+
+def insertUser():
+    u1 = User(name="Admin",
+              username="Admin",
+              password="202cb962ac59075b964b07152d234b70",
+              gender=Gender.MALE,
+              user_role=UserRole.ADMIN)
+    u2 = User(name="Doctor",
+              username="Doctor",
+              password="202cb962ac59075b964b07152d234b70",
+              gender=Gender.MALE,
+              user_role=UserRole.DOCTOR)
+    u3 = User(name="Worker",
+              username="Worker",
+              password="202cb962ac59075b964b07152d234b70",
+              gender=Gender.FEMALE,
+              user_role=UserRole.MEDICAL_WORKER)
+    db.session.add(u1)
+    db.session.add(u2)
+    db.session.add(u3)
+
+def insertCachDung():
+    cd1 = CachDungThuoc(name="Uống")
+    cd2 = CachDungThuoc(name="Thoa")
+    cd3 = CachDungThuoc(name="Tiêm")
+    cd4 = CachDungThuoc(name="Ngậm")
+    db.session.add(cd1)
+    db.session.add(cd2)
+    db.session.add(cd3)
+    db.session.add(cd4)
+
+def insertDonViThuoc():
+    dvt1 = DonViThuoc(donvi="Viên")
+    dvt2 = DonViThuoc(donvi="Chai")
+    db.session.add(dvt1)
+    db.session.add(dvt2)
+
+def insertDonGiaThuoc():
+    dgt1 = DonGiaThuoc(dongia=5000)
+    dgt2 = DonGiaThuoc(dongia=10000)
+    dgt3 = DonGiaThuoc(dongia=20000)
+    dgt4 = DonGiaThuoc(dongia=50000)
+    db.session.add(dgt1)
+    db.session.add(dgt2)
+    db.session.add(dgt3)
+    db.session.add(dgt4)
+
+def insertLoaiThuoc():
+    lt1 = LoaiThuoc(name="Becberin")
+    lt2 = LoaiThuoc(name="Aspirin")
+    lt3 = LoaiThuoc(name="Paracetamol ")
+    lt4 = LoaiThuoc(name="Hidrasec")
+    lt5 = LoaiThuoc(name="Natufib")
+    db.session.add(lt1)
+    db.session.add(lt2)
+    db.session.add(lt3)
+    db.session.add(lt4)
+    db.session.add(lt5)
+
+def insertLoaiBenh():
+    lb1 = LoaiBenh(name="Đau đầu")
+    lb2 = LoaiBenh(name="Sốt")
+    lb3 = LoaiBenh(name="Cảm cúm")
+    lb4 = LoaiBenh(name="Viêm khớp")
+    lb5 = LoaiBenh(name="Tay chân miệng")
+    db.session.add(lb1)
+    db.session.add(lb2)
+    db.session.add(lb3)
+    db.session.add(lb4)
+    db.session.add(lb5)
+
+def insertTrieuChung():
+    tc1 = TrieuChung(name="Chảy mũi")
+    tc2 = TrieuChung(name="Chóng mặt")
+    tc3 = TrieuChung(name="Nóng sốt")
+    tc4 = TrieuChung(name="Hoa mắt")
+    db.session.add(tc1)
+    db.session.add(tc2)
+    db.session.add(tc3)
+    db.session.add(tc4)
+
+def insertBenhNhan():
+    bn1 = BenhNhan(name="Nguyễn Văn A")
+    bn2 = BenhNhan(name="Trần Thị B")
+    bn3 = BenhNhan(name="Lê C")
+    db.session.add(bn1)
+    db.session.add(bn2)
+    db.session.add(bn3)
 
 if __name__ == '__main__':
+    db.drop_all()
     db.create_all()
+    insertUser()
+    insertBenhNhan()
+    insertLoaiBenh()
+    insertCachDung()
+    insertDonGiaThuoc()
+    insertDonViThuoc()
+    insertLoaiThuoc()
+    insertTrieuChung()
+    db.session.commit()
 
 
 

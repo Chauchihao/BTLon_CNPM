@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center text-info">ĐĂNG KÝ</h1>
+        {% if err_msg %}
+        <div class="alert alert-danger">
+            <h4>{{ err_msg }}</h4>
+        </div>
+        {% endif %}
+        <form method="post"
+              action="{{ url_for('register') }}"
+              enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Tên</label>
+                <input type="text"
+                       required
+                       id="name"
+                       name="name"
+                       class="form-control"
+                       aria-required="true"/>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email"
+                       id="email"
+                       name="email"
+                       class="form-control"
+                       aria-required="true"/>
+            </div>
+            <div class="form-group">
+                <label >Số điện thoại</label>
+                <input  type="text"
+                        class="form-control"
+                        id="sdt"
+                        name="sdt"
+                        aria-required="true"/>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text"
+                       id="username"
+                       name="username"
+                       class="form-control"
+                       aria-required="true"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password"
+                       id="password"
+                       name="password"
+                       class="form-control"
+                       aria-required="true"/>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Xác nhận mật khẩu</label>
+                <input type="password"
+                       id="confirm-password"
+                       name="confirm-password"
+                       class="form-control"
+                       aria-required="true"/>
+            </div>
+            <div class="form-group">
+                <label for="avatar">Ảnh đại diện</label>
+                <input type="file"
+                       id="avatar"
+                       name="avatar"
+                       class="form-control" />
+            </div>
+            <div>
+                <input type="submit"
+                       value="Đăng ký"
+                       class="btn btn-warning" />
+            </div>
+        </form>
+    </div>
+</body>
+</html>
