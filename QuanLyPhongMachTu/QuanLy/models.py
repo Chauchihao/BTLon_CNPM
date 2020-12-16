@@ -7,7 +7,7 @@ from enum import Enum as AEnum
 
 
 class BenhNhan(db.Model):
-    __tablename__ = "DanhSachBenhNhan"
+    __tablename__ = "danhsachbenhnhan"
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     date = Column(Date, default=datetime.now())
@@ -30,7 +30,7 @@ class BenhNhan(db.Model):
 #     id_benh_nhan = Column(Integer, ForeignKey(BenhNhan.id), nullable=False)
 
 class LoaiBenh(db.Model):
-    __tablename__ = 'LoaiBenh'
+    __tablename__ = 'loaibenh'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     trieuchung = relationship('TrieuChung', secondary='loaibenh_trieuchung', lazy='subquery',
@@ -44,7 +44,7 @@ benhnhan_loaibenh = db.Table('benhnhan_loaibenh',
                              Column('id_loaibenh', Integer, ForeignKey(LoaiBenh.id), primary_key=True))
 
 class TrieuChung(db.Model):
-    __tablename__ = 'TrieuChung'
+    __tablename__ = 'trieuchung'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
 
@@ -60,7 +60,7 @@ benhnhan_trieuchung = db.Table('benhnhan_trieuchung',
                                 Column('id_trieuchung', Integer, ForeignKey(TrieuChung.id), primary_key=True))
 
 class LoaiThuoc(db.Model):
-    __tablename__ = 'LoaiThuoc'
+    __tablename__ = 'loaithuoc'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     cachdung = relationship('CachDungThuoc', secondary='loaithuoc_cachdung', lazy='subquery',
@@ -70,7 +70,7 @@ class LoaiThuoc(db.Model):
         return self.name
 
 class DonViThuoc(db.Model):
-    __tablename__ = 'DonViThuoc'
+    __tablename__ = 'donvithuoc'
     id = Column(Integer, primary_key=True, autoincrement=True)
     donvi = Column(String(100), nullable=False)
 
@@ -78,7 +78,7 @@ class DonViThuoc(db.Model):
         return self.donvi
 
 class DonGiaThuoc(db.Model):
-    __tablename__ = 'DonGiaThuoc'
+    __tablename__ = 'dongiathuoc'
     id = Column(Integer, primary_key=True, autoincrement=True)
     dongia = Column(String(100), nullable=False)
     donvi = relationship('DonViThuoc', secondary='dongia_donvithuoc', lazy='subquery',
@@ -96,7 +96,7 @@ loaithuoc_donvithuoc = db.Table('loaithuoc_donvithuoc',
                                 Column('id_donvi', Integer, ForeignKey(DonViThuoc.id), primary_key=True))
 
 class CachDungThuoc(db.Model):
-    __tablename__ = 'CachDungThuoc'
+    __tablename__ = 'cachdungthuoc'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     loaithuoc = relationship('LoaiThuoc', secondary='loaithuoc_cachdung', lazy='subquery',
@@ -119,7 +119,7 @@ class Gender(AEnum):
     FEMALE = 2
 
 class User(db.Model, UserMixin):
-    __tablename__ = 'User'
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     username = Column(String(100), nullable=False)

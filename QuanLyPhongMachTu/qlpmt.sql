@@ -76,7 +76,7 @@ DROP TABLE IF EXISTS `cachdungthuoc`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cachdungthuoc` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -100,7 +100,7 @@ DROP TABLE IF EXISTS `danhsachbenhnhan`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `danhsachbenhnhan` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -152,7 +152,7 @@ DROP TABLE IF EXISTS `dongiathuoc`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dongiathuoc` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `dongia` float NOT NULL,
+  `dongia` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -163,7 +163,7 @@ CREATE TABLE `dongiathuoc` (
 
 LOCK TABLES `dongiathuoc` WRITE;
 /*!40000 ALTER TABLE `dongiathuoc` DISABLE KEYS */;
-INSERT INTO `dongiathuoc` VALUES (1,5000),(2,10000),(3,20000),(4,50000);
+INSERT INTO `dongiathuoc` VALUES (1,'5000'),(2,'10000'),(3,'20000'),(4,'50000');
 /*!40000 ALTER TABLE `dongiathuoc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +176,7 @@ DROP TABLE IF EXISTS `donvithuoc`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donvithuoc` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `donvi` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `donvi` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -200,7 +200,7 @@ DROP TABLE IF EXISTS `loaibenh`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `loaibenh` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -250,7 +250,7 @@ DROP TABLE IF EXISTS `loaithuoc`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `loaithuoc` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -326,7 +326,7 @@ DROP TABLE IF EXISTS `trieuchung`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `trieuchung` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -350,17 +350,17 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
-  `address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `gender` enum('MALE','FEMALE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gender` enum('MALE','FEMALE') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `year_of_birth` int DEFAULT NULL,
   `join_date` date DEFAULT NULL,
-  `user_role` enum('ADMIN','DOCTOR','MEDICAL_WORKER','PATIENT') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_role` enum('ADMIN','DOCTOR','MEDICAL_WORKER') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `user_chk_1` CHECK ((`active` in (0,1)))
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -385,4 +385,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-15 17:30:28
+-- Dump completed on 2020-12-15 21:09:48
